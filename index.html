@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 全球 AI Native 组织全景报告</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #12121a;
+  --bg-card: #16161f;
+  --bg-hover: #1e1e2a;
+  --text-primary: #e8e6e3;
+  --text-secondary: #9a97a0;
+  --text-muted: #5c5a63;
+  --accent-blue: #4d7cfe;
+  --accent-cyan: #00d4aa;
+  --accent-purple: #a855f7;
+  --accent-orange: #f59e0b;
+  --accent-rose: #f43f5e;
+  --accent-sky: #38bdf8;
+  --border: rgba(255,255,255,0.06);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--bg-primary); color: var(--text-primary);
+  line-height: 1.8; overflow-x: hidden;
+}
+::selection { background: var(--accent-blue); color: white; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--accent-blue); border-radius: 3px; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(10,10,15,0.85); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border); transition: transform 0.3s;
+}
+nav.hidden { transform: translateY(-100%); }
+.nav-inner {
+  max-width: 1400px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem; height: 56px;
+}
+.nav-logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 0.85rem;
+  color: var(--accent-cyan); letter-spacing: 2px; text-transform: uppercase;
+}
+.nav-links { display: flex; gap: 0.25rem; }
+.nav-links a {
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 0.8rem; padding: 0.4rem 0.75rem;
+  border-radius: 6px; transition: all 0.2s; white-space: nowrap;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center; padding: 6rem 2rem 4rem;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(77,124,254,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 20% 80%, rgba(0,212,170,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 30% at 80% 60%, rgba(168,85,247,0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+.hero-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; color: var(--accent-cyan);
+  letter-spacing: 4px; text-transform: uppercase;
+  margin-bottom: 2rem; position: relative;
+  opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+}
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 900; line-height: 1.2;
+  max-width: 900px; position: relative;
+  opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+}
+.hero h1 .hl {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-sub {
+  font-size: 1.05rem; color: var(--text-secondary);
+  max-width: 700px; margin: 1.5rem auto 0;
+  position: relative; line-height: 1.9;
+  opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+}
+.hero-stats {
+  display: flex; gap: 3rem; margin-top: 3rem;
+  position: relative; opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+}
+.hero-stat { text-align: center; }
+.hero-stat .num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.2rem; font-weight: 700;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-stat .label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; }
+.scroll-hint {
+  position: absolute; bottom: 2rem;
+  opacity: 0; animation: fadeUp 0.8s 1s forwards;
+}
+.scroll-hint span {
+  display: block; width: 1px; height: 40px;
+  background: linear-gradient(to bottom, var(--accent-cyan), transparent);
+  margin: 0 auto; animation: scrollPulse 2s infinite;
+}
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+@keyframes scrollPulse { 0%,100% { opacity:0.3; } 50% { opacity:1; } }
+
+.section { max-width: 1200px; margin: 0 auto; padding: 5rem 2rem; }
+.section-header { margin-bottom: 3rem; }
+.section-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; color: var(--accent-cyan);
+  letter-spacing: 3px; text-transform: uppercase; margin-bottom: 0.75rem;
+}
+.section-title { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; line-height: 1.3; }
+.section-desc { color: var(--text-secondary); margin-top: 1rem; max-width: 800px; font-size: 0.95rem; }
+
+.overview-scroll { overflow-x: auto; margin-top: 1rem; }
+.overview-table {
+  width: 100%; min-width: 1100px;
+  border-collapse: separate; border-spacing: 0; font-size: 0.82rem;
+}
+.overview-table thead th {
+  background: var(--bg-card); color: var(--accent-cyan);
+  font-weight: 500; padding: 0.9rem 1rem; text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; letter-spacing: 1px; text-transform: uppercase;
+}
+.overview-table tbody td {
+  padding: 0.85rem 1rem; border-bottom: 1px solid var(--border);
+  vertical-align: top; color: var(--text-secondary);
+}
+.overview-table tbody tr { transition: background 0.2s; }
+.overview-table tbody tr:hover { background: var(--bg-hover); }
+.org-name { font-weight: 600; color: var(--text-primary); white-space: nowrap; }
+.badge {
+  display: inline-block; padding: 0.15rem 0.5rem;
+  border-radius: 4px; font-size: 0.7rem; font-family: 'JetBrains Mono', monospace;
+}
+.badge-open { background: rgba(0,212,170,0.12); color: var(--accent-cyan); }
+.badge-closed { background: rgba(244,63,94,0.12); color: var(--accent-rose); }
+.badge-partial { background: rgba(245,158,11,0.12); color: var(--accent-orange); }
+
+.org-grid { display: grid; gap: 1.5rem; grid-template-columns: 1fr; }
+.org-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden; transition: border-color 0.3s, box-shadow 0.3s;
+}
+.org-card:hover { border-color: rgba(77,124,254,0.3); box-shadow: 0 0 40px rgba(77,124,254,0.06); }
+.org-card-header {
+  padding: 1.5rem 1.75rem; cursor: pointer;
+  display: flex; align-items: center; gap: 1.25rem; user-select: none;
+}
+.org-icon {
+  width: 48px; height: 48px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 0.85rem; color: white; flex-shrink: 0;
+}
+.org-card-meta { flex: 1; }
+.org-card-name { font-size: 1.15rem; font-weight: 700; }
+.org-card-subtitle { font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.15rem; }
+.org-card-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem; }
+.org-tag {
+  font-size: 0.68rem; padding: 0.15rem 0.5rem;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  border-radius: 4px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;
+}
+.expand-icon {
+  width: 28px; height: 28px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); transition: transform 0.3s; font-size: 1.2rem;
+}
+.org-card.open .expand-icon { transform: rotate(180deg); }
+.org-card-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.org-card.open .org-card-body { max-height: 3000px; }
+.org-content { padding: 0 1.75rem 1.75rem; border-top: 1px solid var(--border); }
+.org-section { margin-top: 1.5rem; }
+.org-section-title {
+  font-size: 0.78rem; font-weight: 600; color: var(--accent-blue);
+  letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+.org-section p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.6rem; line-height: 1.85; }
+.org-kpi-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem; margin-top: 1rem;
+}
+.org-kpi {
+  background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+  border-radius: 8px; padding: 0.8rem 1rem;
+}
+.org-kpi .kpi-val {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 1.1rem; color: var(--text-primary);
+}
+.org-kpi .kpi-label { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+.bar-chart { margin-top: 1rem; }
+.bar-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.6rem; }
+.bar-label { width: 140px; flex-shrink: 0; font-size: 0.8rem; color: var(--text-secondary); text-align: right; }
+.bar-track { flex: 1; height: 22px; background: rgba(255,255,255,0.03); border-radius: 4px; position: relative; }
+.bar-fill {
+  height: 100%; border-radius: 4px;
+  display: flex; align-items: center; padding: 0 0.5rem;
+  font-size: 0.7rem; font-weight: 600; color: white;
+  font-family: 'JetBrains Mono', monospace; white-space: nowrap;
+  width: 0; transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.bar-fill.animated { /* width set by JS */ }
+
+.tab-bar {
+  display: flex; gap: 0.25rem; margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border); overflow-x: auto;
+}
+.tab-btn {
+  padding: 0.65rem 1.25rem; font-size: 0.82rem; font-weight: 500;
+  color: var(--text-muted); background: none; border: none;
+  cursor: pointer; white-space: nowrap;
+  border-bottom: 2px solid transparent; transition: all 0.2s; font-family: inherit;
+}
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--accent-cyan); border-bottom-color: var(--accent-cyan); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.incentive-table {
+  width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.82rem;
+}
+.incentive-table thead th {
+  background: var(--bg-card); color: var(--accent-cyan);
+  font-weight: 500; padding: 0.8rem; text-align: left;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+}
+.incentive-table td {
+  padding: 0.75rem 0.8rem; border-bottom: 1px solid var(--border);
+  color: var(--text-secondary); vertical-align: top;
+}
+.incentive-table tr:hover { background: var(--bg-hover); }
+.cell-name { font-weight: 600; color: var(--text-primary); white-space: nowrap; }
+
+.compare-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem;
+}
+.compare-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1.5rem;
+}
+.compare-card h4 { font-size: 0.95rem; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+.compare-item {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 0.85rem;
+}
+.compare-item:last-child { border-bottom: none; }
+.compare-label { color: var(--text-muted); flex-shrink: 0; }
+.compare-val { color: var(--text-primary); text-align: right; font-weight: 500; }
+
+.insight-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.25rem;
+}
+.insight-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1.75rem; position: relative; overflow: hidden;
+}
+.insight-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+.insight-card:nth-child(1)::before { background: linear-gradient(90deg, var(--accent-blue), transparent); }
+.insight-card:nth-child(2)::before { background: linear-gradient(90deg, var(--accent-cyan), transparent); }
+.insight-card:nth-child(3)::before { background: linear-gradient(90deg, var(--accent-purple), transparent); }
+.insight-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.5rem; font-weight: 700; color: rgba(255,255,255,0.05);
+  position: absolute; top: 0.5rem; right: 1rem;
+}
+.insight-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; line-height: 1.5; }
+.insight-body { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.85; }
+
+.ew-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+.ew-col-title {
+  font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
+  margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace;
+}
+.ew-col:first-child .ew-col-title { color: var(--accent-blue); }
+.ew-col:last-child .ew-col-title { color: var(--accent-orange); }
+.ew-item { margin-bottom: 0.8rem; font-size: 0.85rem; }
+.ew-item-label { font-weight: 600; color: var(--text-primary); font-size: 0.8rem; }
+.ew-item-val { color: var(--text-secondary); margin-top: 0.15rem; }
+
+.divider {
+  max-width: 1200px; margin: 0 auto; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+
+.intro-text {
+  max-width: 900px; font-size: 0.95rem; color: var(--text-secondary);
+  line-height: 2; margin-bottom: 2rem;
+}
+.intro-text p { margin-bottom: 1rem; }
+.callout {
+  border-left: 3px solid var(--accent-blue);
+  padding: 1rem 1.25rem; background: rgba(77,124,254,0.04);
+  border-radius: 0 8px 8px 0; margin: 1.25rem 0;
+  font-size: 0.9rem; color: var(--text-secondary); font-style: italic;
+}
+
+footer {
+  text-align: center; padding: 3rem 2rem;
+  color: var(--text-muted); font-size: 0.78rem;
+  border-top: 1px solid var(--border);
+}
+
+.fade-in {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.6s, transform 0.6s;
+}
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+  .ew-grid { grid-template-columns: 1fr; }
+  .org-kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .insight-grid { grid-template-columns: 1fr; }
+  .compare-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <div class="nav-inner">
+    <div class="nav-logo">AI Native 2026</div>
+    <div class="nav-links">
+      <a href="#overview">九大组织</a>
+      <a href="#overseas">海外巨头</a>
+      <a href="#china">中国创新者</a>
+      <a href="#compare">对比分析</a>
+      <a href="#incentives">激励机制</a>
+      <a href="#insights">核心发现</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-tag">Global Research Report · 2026 · Build By Siry</div>
+  <h1>全球 <span class="hl">AI Native</span> 组织<br>全维度调研与全景报告</h1>
+  <p class="hero-sub">从"大语言模型"向"全局智能体生态"的范式跃迁——深度解码 OpenAI、Anthropic、DeepMind、xAI、DeepSeek、MiniMax、月之暗面、字节 Seed、阿里 Qwen 九大前沿组织的技术哲学、人才密码与组织架构</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">9</div><div class="label">深度剖析组织</div></div>
+    <div class="hero-stat"><div class="num">4+5</div><div class="label">海外 + 中国阵营</div></div>
+    <div class="hero-stat"><div class="num">2026</div><div class="label">最新调研周期</div></div>
+  </div>
+  <div class="scroll-hint"><span></span></div>
+</section>
+
+<section class="section fade-in">
+  <div class="intro-text">
+    <p>在 2025 至 2026 年的技术演进周期中，全球人工智能正式跨越了以对话和模式识别为核心的基础模型阶段，全面迈入<strong style="color:var(--accent-cyan)">"Agentic（智能体化）组织重构"</strong>的新纪元。大型语言模型的演化已突破单一的文本生成边界，演进为具备深度推理、长线规划、多步执行以及原生工具调用能力的自主智能体。</p>
+    <p>真正的 AI Native 组织遵循着完全不同的第一性原理：它们直接围绕<strong style="color:var(--accent-blue)">"人机协同（Human-AI Collaboration）"</strong>重构其业务逻辑、底层架构、核心人才梯队、激励机制与决策链路。这种重构不是对旧体系的修补，而是对生产力释放机制的彻底颠覆。</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- OVERVIEW -->
+<section class="section fade-in" id="overview">
+  <div class="section-header">
+    <div class="section-tag">Part 01</div>
+    <h2 class="section-title">九家组织全景总览</h2>
+    <p class="section-desc">涵盖 Anthropic、OpenAI、Google DeepMind、xAI、DeepSeek、MiniMax、Moonshot AI、字节 Seed、阿里 Qwen</p>
+  </div>
+  <div class="overview-scroll">
+    <table class="overview-table">
+      <thead><tr><th>组织</th><th>成立</th><th>估值/市值</th><th>人数</th><th>核心技术路线</th><th>旗舰模型</th><th>开源策略</th></tr></thead>
+      <tbody>
+        <tr><td class="org-name">OpenAI</td><td>2015</td><td>$3,000亿+</td><td>~3,000-3,500</td><td>GPT系列、o1推理、DALL-E、Codex</td><td>GPT-5 / o1</td><td><span class="badge badge-closed">闭源为主</span></td></tr>
+        <tr><td class="org-name">Anthropic</td><td>2021</td><td>$3,800亿</td><td>~3,000</td><td>Constitutional AI、可解释性、RLHF</td><td>Claude 4.6 Opus</td><td><span class="badge badge-closed">闭源为主</span></td></tr>
+        <tr><td class="org-name">Google DeepMind</td><td>2023合并</td><td>Alphabet子部门</td><td>~8,100</td><td>Transformer、AlphaFold、Gemini多模态</td><td>Gemini 3.1</td><td><span class="badge badge-partial">部分开源</span></td></tr>
+        <tr><td class="org-name">xAI</td><td>2023</td><td>$2,500亿</td><td>~1,200+</td><td>Grok系列、Colossus超算</td><td>Grok 5</td><td><span class="badge badge-partial">部分开源</span></td></tr>
+        <tr><td class="org-name">DeepSeek</td><td>2023</td><td>未披露</td><td>~150-200</td><td>MoE、MLA注意力、FP8低精度训练</td><td>DeepSeek-R1/V3</td><td><span class="badge badge-open">全面开源</span></td></tr>
+        <tr><td class="org-name">Moonshot AI</td><td>2023</td><td>$33亿+</td><td>~300</td><td>MoE、Muon优化器、线性注意力</td><td>Kimi K2.5</td><td><span class="badge badge-open">全面开源 MIT</span></td></tr>
+        <tr><td class="org-name">MiniMax</td><td>2021</td><td>~$40亿+ (港股)</td><td>~200-385</td><td>Lightning Attention、多模态基座</td><td>M2.5</td><td><span class="badge badge-partial">部分开源</span></td></tr>
+        <tr><td class="org-name">字节 Seed</td><td>2023</td><td>字节子部门</td><td>~1,500</td><td>Seed系列、UltraMem稀疏架构</td><td>Doubao 2.0</td><td><span class="badge badge-partial">部分开源</span></td></tr>
+        <tr><td class="org-name">阿里 Qwen</td><td>2023</td><td>阿里子部门</td><td>~600</td><td>Qwen系列、Hybrid Thinking</td><td>Qwen 3.5</td><td><span class="badge badge-open">大规模开源</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="margin-top:2.5rem;">
+    <h3 style="font-size:0.9rem;margin-bottom:1rem;color:var(--text-secondary);">团队规模对比</h3>
+    <div class="bar-chart" id="sizeChart">
+      <div class="bar-row"><div class="bar-label">DeepMind</div><div class="bar-track"><div class="bar-fill" data-target="100" style="background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple));">8,100</div></div></div>
+      <div class="bar-row"><div class="bar-label">OpenAI</div><div class="bar-track"><div class="bar-fill" data-target="43" style="background:linear-gradient(90deg,var(--accent-blue),var(--accent-cyan));">~3,500</div></div></div>
+      <div class="bar-row"><div class="bar-label">Anthropic</div><div class="bar-track"><div class="bar-fill" data-target="37" style="background:linear-gradient(90deg,var(--accent-cyan),var(--accent-blue));">~3,000</div></div></div>
+      <div class="bar-row"><div class="bar-label">字节 Seed</div><div class="bar-track"><div class="bar-fill" data-target="19" style="background:linear-gradient(90deg,var(--accent-orange),var(--accent-rose));">~1,500</div></div></div>
+      <div class="bar-row"><div class="bar-label">xAI</div><div class="bar-track"><div class="bar-fill" data-target="15" style="background:var(--accent-purple);">~1,200</div></div></div>
+      <div class="bar-row"><div class="bar-label">阿里 Qwen</div><div class="bar-track"><div class="bar-fill" data-target="7" style="background:var(--accent-orange);">~600</div></div></div>
+      <div class="bar-row"><div class="bar-label">MiniMax</div><div class="bar-track"><div class="bar-fill" data-target="5" style="background:var(--accent-sky);">~385</div></div></div>
+      <div class="bar-row"><div class="bar-label">Moonshot</div><div class="bar-track"><div class="bar-fill" data-target="4" style="background:var(--accent-cyan);">~300</div></div></div>
+      <div class="bar-row"><div class="bar-label">DeepSeek</div><div class="bar-track"><div class="bar-fill" data-target="2" style="background:var(--accent-rose);">~150</div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- OVERSEAS -->
+<section class="section fade-in" id="overseas">
+  <div class="section-header">
+    <div class="section-tag">Part 02</div>
+    <h2 class="section-title">海外前沿AI巨头的技术演进与组织密码</h2>
+    <p class="section-desc">海外四大AI巨头在探索通用人工智能（AGI）的道路上，演化出了截然不同的组织形态与技术哲学。其差异不仅体现在基础模型上，更深刻反映在资金运作、治理结构、人才密度与AI安全理念中。</p>
+  </div>
+  <div class="org-grid">
+
+    <div class="org-card"><div class="org-card-header" onclick="toggleCard(this)"><div class="org-icon" style="background:linear-gradient(135deg,#10b981,#059669);">OAI</div><div class="org-card-meta"><div class="org-card-name">OpenAI</div><div class="org-card-subtitle">资本算力飞轮 · 组织重构 · 研究-产品极致收敛</div><div class="org-card-tags"><span class="org-tag">~3,000-3,500人</span><span class="org-tag">$3,000亿+估值</span><span class="org-tag">PBC架构</span></div></div><div class="expand-icon">▾</div></div><div class="org-card-body"><div class="org-content">
+      <div class="org-kpi-row">
+        <div class="org-kpi"><div class="kpi-val">900万+</div><div class="kpi-label">企业付费用户</div></div>
+        <div class="org-kpi"><div class="kpi-val">160万</div><div class="kpi-label">活跃Codex开发者</div></div>
+        <div class="org-kpi"><div class="kpi-val">$7,300亿</div><div class="kpi-label">最新估值轮</div></div>
+        <div class="org-kpi"><div class="kpi-val">$1,100亿</div><div class="kpi-label">新一轮融资</div></div>
+      </div>
+      <div class="org-section"><div class="org-section-title">技术路径与算力分配</div><p>采取"迭代部署"策略，从语言模型（GPT系列）到多模态（DALL-E、Sora）到推理模型（o1/o3），持续拓展能力边界。2024-2025年间，绝大部分研发算力被战略性地倾斜于未发布模型的实验性训练与底层基础研究。平台已积累超过900万付费企业用户与160万活跃Codex开发者，GPT-5.2进一步巩固了其全能型推理与开发者生态核心地位。</p></div>
+      <div class="org-section"><div class="org-section-title">治理架构演化</div><p>2025年10月将营利性子公司重组为公共利益公司（PBC），名为 OpenAI Group PBC。OpenAI Foundation 保持绝对控制权和董事会任命权，持有 PBC 26%股权（约$1,300亿），并保留15年认股权证（十倍增长触发），确保非营利基金会成为技术爆炸最大长期受益者。微软等投资方持有约27%股份。以$7,300亿估值完成$1,100亿融资，构筑"资本-算力-数据"飞轮。</p></div>
+      <div class="org-section"><div class="org-section-title">核心人才与文化</div><p>Mark Chen 升任首席研究官（CRO）；Brad Lightcap 作为COO统管全球商业部署；Julia Villagra 出任首席人才官。出台极其严格的《Raising Concerns Policy》并设立24小时诚信热线。整个组织运行在Slack上，有着"Move Fast and Break Things"气质——一个高级团队可以在七周内完成产品构建和发布。六大运营原则：Find a Way、Creativity over Convention、结果导向、透明直接、强调书面表达。</p></div>
+    </div></div></div>
+
+    <div class="org-card"><div class="org-card-header" onclick="toggleCard(this)"><div class="org-icon" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);">ANT</div><div class="org-card-meta"><div class="org-card-name">Anthropic</div><div class="org-card-subtitle">安全驱动 · 负责任扩展 · 高薪激励 · 企业级智能体</div><div class="org-card-tags"><span class="org-tag">~3,000人</span><span class="org-tag">$3,800亿估值</span><span class="org-tag">公共利益公司</span></div></div><div class="expand-icon">▾</div></div><div class="org-card-body"><div class="org-content">
+      <div class="org-kpi-row">
+        <div class="org-kpi"><div class="kpi-val">$32.6万</div><div class="kpi-label">平均总薪酬</div></div>
+        <div class="org-kpi"><div class="kpi-val">$54.8万</div><div class="kpi-label">ML工程师薪酬</div></div>
+        <div class="org-kpi"><div class="kpi-val">80%</div><div class="kpi-label">人才保留率</div></div>
+        <div class="org-kpi"><div class="kpi-val">95%</div><div class="kpi-label">Offer接受率(GTM)</div></div>
+      </div>
+      <div class="org-section"><div class="org-section-title">技术演进：Agentic Workflows</div><p>技术路线指向"Agentic Workflows"在强监管行业的纵深渗透。推出 Claude 4.6 系列、Claude Cowork 以及 MCP，与 PwC 等全球咨询巨头达成深度合作，将 AI 特工植入金融、医疗与生命科学的遗留核心系统。内部研究发现：完全委托AI编码会损害人类工程师的技能形成与深度学习，促使设计工具时更注重人类在环的知识留存。</p></div>
+      <div class="org-section"><div class="org-section-title">负责任扩展政策 RSP v3.0</div><p>构建了"AI安全等级"（ASL）框架与"条件性承诺"机制：如果模型能力跨越特定门槛，组织必须强制引入更严苛的安全护栏。安全团队与红蓝对抗团队拥有不可剥夺的一票否决权。这种政策是组织内部的"强制功能"，确保在极速扩张中安全合规不被稀释。</p></div>
+      <div class="org-section"><div class="org-section-title">组织运作特色</div><p>CEO Dario Amodei 通过Slack上长达2000字的深度思考文章来引导方向（"随笔领导力"）。运营规划周期不超过90天，比较像"即兴演出"。内部广泛使用 Claude Code 进行研发——132名工程师的20万条使用记录被作为研究对象，形成"用AI改变工作方式，再将工作方式作为研究课题"的独特元维度。将GPU算力配额作为顶尖科学家的核心激励手段。</p></div>
+    </div></div></div>
+
+    <div class="org-card"><div class="org-card-header" onclick="toggleCard(this)"><div class="org-icon" style="background:linear-gradient(135deg,#4285f4,#1a73e8);">GDM</div><div class="org-card-meta"><div class="org-card-name">Google DeepMind</div><div class="org-card-subtitle">体系整合 · 全栈生态网络 · "行动派"模型探索</div><div class="org-card-tags"><span class="org-tag">~8,100人</span><span class="org-tag">Alphabet子部门</span><span class="org-tag">诺贝尔化学奖</span></div></div><div class="expand-icon">▾</div></div><div class="org-card-body"><div class="org-content">
+      <div class="org-section"><div class="org-section-title">全栈生态优势</div><p>全球唯一同时拥有从底层自研芯片（TPU集群）、基础 Transformer 架构、海量专有数据到亿级国民应用全栈生态的AI组织。CEO 为诺贝尔化学奖获得者 Demis Hassabis，Jeff Dean 担任 Google Chief Scientist。拥有全球AI组织中最深厚的学术积淀——Transformers、AlphaGo、AlphaFold、word2vec、WaveNet、深度强化学习等均出自其团队。</p></div>
+      <div class="org-section"><div class="org-section-title">Gemini 三阶段演化</div><p><strong>第一阶段（Gemini 1）</strong>：原生多模态理解。<strong>第二阶段（Gemini 2）</strong>：引入"思考"能力，赋予链式推理与分布规划。<strong>第三阶段（Gemini 3 / 2.5）</strong>：全面聚焦"行动"——根据推理采取实际行动，通过原生调用 Google Search 进行实时核实与代码执行闭环。</p></div>
+      <div class="org-section"><div class="org-section-title">跨学科科研与AGI路径</div><p>维持解决人类底层科学挑战的独立探索梯队：AlphaFold（蛋白质结构）、AlphaGenome / AlphaMissense（基因疾病）、WeatherNext（气象预测）、SIMA 2 / Genie 3（具身智能）。发布《通往AGI的负责任路径》与"AGI能力分级框架"。正在经历深刻的组织整合：Gemini、AI Studio、API、Responsible AI 团队全部并入 DeepMind，形成研究与产品一体化架构。</p></div>
+    </div></div></div>
+
+    <div class="org-card"><div class="org-card-header" onclick="toggleCard(this)"><div class="org-icon" style="background:linear-gradient(135deg,#f43f5e,#e11d48);">xAI</div><div class="org-card-meta"><div class="org-card-name">xAI</div><div class="org-card-subtitle">极限速度 · 万卡集群 · "宏观企业仿真"的野望</div><div class="org-card-tags"><span class="org-tag">~1,200人</span><span class="org-tag">$2,500亿(SpaceX收购)</span><span class="org-tag">Colossus超算</span></div></div><div class="expand-icon">▾</div></div><div class="org-card-body"><div class="org-content">
+      <div class="org-kpi-row">
+        <div class="org-kpi"><div class="kpi-val">20万+</div><div class="kpi-label">GPU (Colossus)</div></div>
+        <div class="org-kpi"><div class="kpi-val">5000万/天</div><div class="kpi-label">Imagine视频生成</div></div>
+        <div class="org-kpi"><div class="kpi-val">65%↓</div><div class="kpi-label">幻觉率下降</div></div>
+        <div class="org-kpi"><div class="kpi-val">1586分</div><div class="kpi-label">EQ-Bench新纪录</div></div>
+      </div>
+      <div class="org-section"><div class="org-section-title">技术哲学与极限速度</div><p>"马斯克式"第一性原理——"最低限度干预"理念，追求模型的极致自由与原真性反馈。从330亿参数 Grok-0 到跨越万亿参数的 Grok-4/5，不到两年完成跨越式发展。6个月内从零构建出超越竞品的语音模式并部署到200万辆特斯拉汽车。Grok 4.1 将幻觉率大幅削减65%至4.22%，在 EQ-Bench 情感理解测试中创下1586分历史新高。</p></div>
+      <div class="org-section"><div class="org-section-title">四大垂直事业部</div><p><strong>Grok Main & Voice</strong>（通用智能）：文本、语音与多模态推理。<strong>Grok Code</strong>（软件智能）：编码调试，向AI递归自我改进演化。<strong>Imagine</strong>（视觉智能）：日均生成5000万视频，30天60亿张图片。<strong>MacroHard</strong>（智能体智能）：终极目标——人类企业运作流程的全量数字仿真与接管。马斯克预测2025年底AI代码生成将直接生成底层二进制文件，彻底终结传统软件工程组织形态。</p></div>
+    </div></div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CHINA -->
+<section class="section fade-in" id="china">
+  <div class="section-header">
+    <div class="section-tag">Part 03</div>
+    <h2 class="section-title">中国 AI Native 创新者的破局之道</h2>
+    <p class="section-desc">面对海外巨头在算力与资本的双重压制，中国AI组织通过极致算法优化、独特人才文化与场景驱动的快速商业化路径，形成极具中国特色的AI Native演进范式。</p>
+  </div>
+  <div class="org-grid">
+
+    <div class="org-card"><div class="org-card-header" onclick="toggleCard(this)"><div class="org-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706);">DS</div><div class="org-card-meta"><div class="org-card-name">DeepSeek（深度求索）</div><div class="org-card-subtitle">"算力平权"的缔造者 · 纯粹学术驱动的青年近卫军</div><div class="org-card-tags"><span class="org-tag">~150-200人</span><span class="org-tag">训练成本仅$600万</span><span class="org-tag">全面开源</span></div></div><div class="expand-icon">▾</div></div><div class="org-card-body"><div class="org-content">
+      <div class="org-kpi-row">
+        <div class="org-kpi"><div class="kpi-val">6710亿</div><div class="kpi-label">总参数量</div></div>
+        <div class="org-kpi"><div class="kpi-val">370亿</div><div class="kpi-label">单次激活参数</div></div>
+        <div class="org-kpi"><div class="kpi-val">$550万</div><div class="kpi-label">训练成本</div></div>
+        <div class="org-kpi"><div class="kpi-val">140+市场</div><div class="kpi-label">下载榜登顶</div></div>
+      </div>
+      <div class="org-section"><div class="org-section-title">技术奇迹：成本革命</div><p>通过极具独创性的 MoE 架构优化与 MLA（多头潜在注意力）机制实现计算效率指数级跃升。6710亿总参数中每次请求仅激活约370亿，完整训练成本仅约$550万——与 OpenAI 动辄数千万至上亿的开销形成极强烈对比。API推理成本压缩到同级竞品的百分之一（每百万Token仅几美分），被业界惊呼为"价格屠夫"。直接终结了单纯依赖硬件CapEx建立护城河的硅谷神话。</p></div>
+      <div class="org-section"><div class="org-section-title">人才哲学与组织文化</div><p>创始人梁文锋坚持"看重底层能力，而非大厂经验"。核心研发团队不足140人，几乎清一色来自清华、北大、中科大等顶尖高校的应届生或低年资青年学者。V3/R1核心建模团队仅20-30人，基础设施团队约15人，多模态团队6-8人。管理风格像研究所，领导者更像"研讨会主持人"。明确禁止内部竞争、不实行严格绩效排名。背靠幻方量化（2025年收益率56.6%），无需背负短期变现KPI压力。MLA注意力机制的突破正是来自一位年轻研究员的个人兴趣——公司为其成立专门团队。</p></div>
+      <div class="callout">"我们缺乏的不是资本，而是如何组织高密度人才进行有效创新的信心和知识。" —— 梁文锋</div>
+    </div></div></div>
+
+    <div class="org-card"><div class="org-card-header" onclick="toggleCard(this)"><div class="org-icon" style="background:linear-gradient(135deg,#38bdf8,#0284c7);">MM</div><div class="org-card-meta"><div class="org-card-name">MiniMax（稀宇科技）</div><div class="org-card-subtitle">全模态平台生态 · "Agent Intern"智能体协同实践</div><div class="org-card-tags"><span class="org-tag">~200-385人</span><span class="org-tag">港股上市</span><span class="org-tag">海外营收>70%</span></div></div><div class="expand-icon">▾</div></div><div class="org-card-body"><div class="org-content">
+      <div class="org-kpi-row">
+        <div class="org-kpi"><div class="kpi-val">2.36亿</div><div class="kpi-label">全球用户</div></div>
+        <div class="org-kpi"><div class="kpi-val">21万+</div><div class="kpi-label">企业客户</div></div>
+        <div class="org-kpi"><div class="kpi-val">90%</div><div class="kpi-label">员工配备Agent</div></div>
+        <div class="org-kpi"><div class="kpi-val">70%+</div><div class="kpi-label">国际营收占比</div></div>
+      </div>
+      <div class="org-section"><div class="org-section-title">Agent Intern 机制：最引人注目的组织学创新</div><p>内部近90%员工在日常工作中配备定制的 Agent Intern（智能体实习生），深度参与软件开发、代码审查、数据分析、运营管理、招聘甚至市场营销策略制定。员工工作范式从"人类手把手教AI如何工作"彻底跨越到"人类作为监督者观察AI如何自主规划并完成工作"，精力被强制从执行层抽离至战略把控与创新思考。形成极速内部飞轮：真实复杂业务中的第一手反馈直接反哺底层算法团队进行下一代模型迭代。</p></div>
+      <div class="org-section"><div class="org-section-title">全球化与商业落地</div><p>产品矩阵包括 Talkie（AI角色）、海螺AI（视频）、Speech-02（语音合成）、Music-01（音乐生成）。旗舰模型 M2.5 刷新 SWE-Bench Verified 行业纪录，将复杂Agent运行成本压缩至一万美元支撑4个Agent连续工作一年，打入 Google Vertex AI、Microsoft Azure、Notion 等全球主流平台。国际市场营收占总营收超70%。</p></div>
+    </div></div></div>
+
+    <div class="org-card"><div class="org-card-header" onclick="toggleCard(this)"><div class="org-icon" style="background:linear-gradient(135deg,#a855f7,#7c3aed);">KM</div><div class="org-card-meta"><div class="org-card-name">月之暗面（Moonshot AI / Kimi）</div><div class="org-card-subtitle">死磕长文本与架构创新的纯粹主义者</div><div class="org-card-tags"><span class="org-tag">~300人</span><span class="org-tag">$33亿+估值</span><span class="org-tag">万亿参数MoE</span></div></div><div class="expand-icon">▾</div></div><div class="org-card-body"><div class="org-content">
+      <div class="org-section"><div class="org-section-title">核心技术：超长上下文与效率极致</div><p>以"用约业界1%的算力交付全球竞争力的模型"为核心策略。创始人杨植麟33岁，XLNet和Transformer-XL论文被广泛引用。Kimi K2是万亿参数MoE模型，仅320亿参数在推理时激活。K2.5支持 Agent Swarm 技术，可同时协调100个专业化AI代理并行工作，执行时间缩短4.5倍。开创Muon优化器大规模应用，自研线性注意力机制。</p></div>
+      <div class="org-section"><div class="org-section-title">研究路线图</div><p>集中攻克大模型底层系统级难题：大规模LLM训练扩展的Muon优化器、KV Cache为核心的分离式服务架构（Mooncake）、Kimi k1.5中强化学习算法的规模化扩展。文本推理能力迅速延伸，向 Visual Agentic Intelligence（视觉智能体化智能）的更高维度演进。核心使命："寻求将能源转化为智能的最优解"。</p></div>
+    </div></div></div>
+
+    <div class="org-card"><div class="org-card-header" onclick="toggleCard(this)"><div class="org-icon" style="background:linear-gradient(135deg,#f43f5e,#fb923c);">BD</div><div class="org-card-meta"><div class="org-card-name">字节跳动 Seed / 豆包</div><div class="org-card-subtitle">应用霸主与基础研究的阵型再平衡</div><div class="org-card-tags"><span class="org-tag">~1,500人</span><span class="org-tag">豆包DAU破亿</span><span class="org-tag">奖金池+35%</span></div></div><div class="expand-icon">▾</div></div><div class="org-card-body"><div class="org-content">
+      <div class="org-section"><div class="org-section-title">战略重组与人才换防</div><p>2025年初挖角前Google Fellow / DeepMind研究副总裁吴永辉空降接管Seed部门，专注AI基础研究突破；原负责人朱文佳专注Flow（模型应用）商业化。背景源于CEO梁汝波的反思：虽然"豆包"DAU登顶，但视频生成和深度推理能力均未达世界顶尖。AI Lab并入Seed，多模态交互由周昌领导。</p></div>
+      <div class="org-section"><div class="org-section-title">最激进的人才激励</div><p>2025年AI方向奖金投入提升35%，调薪预算池暴涨1.5倍。彻底打破原有5级10档体系，扁平化重构为L1-L10单轨制。Seed团队采用每月归属期权机制，核心员工单月最高可获¥13万期权，预计18个月累计数百万。E/O级员工年终奖金可达10个月薪资。为Seed Edge（长期AGI研究团队）取消OKR，改用"长期评估+结果导向"。</p></div>
+    </div></div></div>
+
+    <div class="org-card"><div class="org-card-header" onclick="toggleCard(this)"><div class="org-icon" style="background:linear-gradient(135deg,#f59e0b,#ea580c);">QW</div><div class="org-card-meta"><div class="org-card-name">阿里通义千问（Qwen）</div><div class="org-card-subtitle">构建 AI 时代的"开源操作系统"</div><div class="org-card-tags"><span class="org-tag">~600人</span><span class="org-tag">6亿+下载</span><span class="org-tag">17万+衍生模型</span></div></div><div class="expand-icon">▾</div></div><div class="org-card-body"><div class="org-content">
+      <div class="org-kpi-row">
+        <div class="org-kpi"><div class="kpi-val">6亿+</div><div class="kpi-label">累计下载量</div></div>
+        <div class="org-kpi"><div class="kpi-val">17万+</div><div class="kpi-label">衍生模型</div></div>
+        <div class="org-kpi"><div class="kpi-val">357个</div><div class="kpi-label">发布模型数量</div></div>
+        <div class="org-kpi"><div class="kpi-val">¥3800亿</div><div class="kpi-label">3年AI投资计划</div></div>
+      </div>
+      <div class="org-section"><div class="org-section-title">开源操作系统战略</div><p>释放超过300个不同参数量与模态的模型版本，不到2年发布357个模型，大部分采用Apache 2.0协议。Qwen3系列创造性引入混合思考模式（Thinking与Non-Thinking双模式），Qwen3-Omni实现多模态原生同步处理。Qwen 3.5 Plus的API费用仅为Gemini 3 Pro的约1/18。累计下载突破6亿次，衍生超17万个二次开发模型。</p></div>
+      <div class="org-section"><div class="org-section-title">生态闭环与挑战</div><p>模型深度整合进钉钉智能协同、淘宝电商搜索、高德智能座舱。2025年底成立"通义消费业务群"统管Qwen App、Quark、AI硬件、UC浏览器。配合阿里云未来3年¥3,800亿AI与云基础设施投资。但面临人才流失：通义三大实验室负责人先后离职，2026年3月核心技术人员（林俊旸、郁博文、惠彬原等）因组织调整离职。</p></div>
+    </div></div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- COMPARE -->
+<section class="section fade-in" id="compare">
+  <div class="section-header">
+    <div class="section-tag">Part 04</div>
+    <h2 class="section-title">跨组织比较与核心发现</h2>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'tab-matrix')">综合对比矩阵</button>
+    <button class="tab-btn" onclick="switchTab(this,'tab-ew')">东西方策略差异</button>
+    <button class="tab-btn" onclick="switchTab(this,'tab-patterns')">共性规律</button>
+  </div>
+
+  <div class="tab-content active" id="tab-matrix">
+    <div class="overview-scroll">
+      <table class="overview-table" style="min-width:1000px;">
+        <thead><tr><th>组织</th><th>核心愿景</th><th>架构特征</th><th>激励机制</th><th>人机协同范式</th></tr></thead>
+        <tbody>
+          <tr><td class="org-name">OpenAI</td><td>暴力美学+强化学习，推动AGI赋能全人类</td><td>PBC双层架构，非营利基金会一票否决权</td><td>高额底薪+PPU，顶尖算力优先供给</td><td>研发、合规与产品强解耦</td></tr>
+          <tr><td class="org-name">Anthropic</td><td>安全对齐至上，条件性扩展前瞻防范</td><td>强合规文化，安全红蓝对抗拥有研发否决权</td><td>核心超$50万+庞大研究算力配额</td><td>高度依赖Claude工具链</td></tr>
+          <tr><td class="org-name">xAI</td><td>极限敏捷，追求速度的物理极限</td><td>极度扁平，四大独立野战军</td><td>第一性原理驱动，追求绝对执行力</td><td>MacroHard企业级数字仿真</td></tr>
+          <tr><td class="org-name">DeepSeek</td><td>算力平权，极致优化（MoE+MLA）</td><td>百人级，专注底层学术突破</td><td>摒弃履历崇拜，本土应届顶尖青年</td><td>与开源社区高频直接交互</td></tr>
+          <tr><td class="org-name">MiniMax</td><td>全模态平台生态</td><td>主攻出海与B端开发者平台</td><td>弱化层级，技术与商业飞轮闭环</td><td>90%员工配备Agent Intern</td></tr>
+          <tr><td class="org-name">字节Seed</td><td>流量+底层模型双引擎</td><td>Seed(研究)+Flow(应用)拆分</td><td>L1-L10单轨制，巨额薪酬包</td><td>海量C端反馈反哺底层模型</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-ew">
+    <div class="ew-grid">
+      <div class="ew-col"><div class="ew-col-title">🌎 西方组织特点</div>
+        <div class="ew-item"><div class="ew-item-label">招聘偏好</div><div class="ew-item-val">跨学科背景、经验丰富者</div></div>
+        <div class="ew-item"><div class="ew-item-label">文化面试</div><div class="ew-item-val">使命对齐、伦理审计</div></div>
+        <div class="ew-item"><div class="ew-item-label">留存核心</div><div class="ew-item-val">使命感 + 学术自由</div></div>
+        <div class="ew-item"><div class="ew-item-label">考核方式</div><div class="ew-item-val">使命导向、弱OKR</div></div>
+        <div class="ew-item"><div class="ew-item-label">人机协同</div><div class="ew-item-val">AI深度嵌入招聘/研发全流程</div></div>
+      </div>
+      <div class="ew-col"><div class="ew-col-title">🌏 中国组织特点</div>
+        <div class="ew-item"><div class="ew-item-label">招聘偏好</div><div class="ew-item-val">年轻应届生、竞赛获奖者</div></div>
+        <div class="ew-item"><div class="ew-item-label">文化面试</div><div class="ew-item-val">技术深度、好奇心驱动</div></div>
+        <div class="ew-item"><div class="ew-item-label">留存核心</div><div class="ew-item-val">舒适环境 + 股权激励</div></div>
+        <div class="ew-item"><div class="ew-item-label">考核方式</div><div class="ew-item-val">混合模式（省略长期研究OKR）</div></div>
+        <div class="ew-item"><div class="ew-item-label">人机协同</div><div class="ew-item-val">开始探索但整合度较低</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-patterns">
+    <div class="compare-grid">
+      <div class="compare-card"><h4>🏢 组织架构共性</h4>
+        <div class="compare-item"><div class="compare-label">扁平化</div><div class="compare-val">几乎所有顶尖组织采用极度扁平结构</div></div>
+        <div class="compare-item"><div class="compare-label">统一头衔</div><div class="compare-val">Anthropic、OpenAI均使用 "MTS"</div></div>
+        <div class="compare-item"><div class="compare-label">规模哲学</div><div class="compare-val">"小而精"成为主流，人才密度>数量</div></div>
+        <div class="compare-item"><div class="compare-label">信息传导</div><div class="compare-val">高度敏捷，技术人员高度自主</div></div>
+      </div>
+      <div class="compare-card"><h4>🧠 人才保留关键</h4>
+        <div class="compare-item"><div class="compare-label">使命驱动</div><div class="compare-val">"传教士打败雇佣兵"</div></div>
+        <div class="compare-item"><div class="compare-label">Anthropic</div><div class="compare-val">80%保留率、95% Offer接受率</div></div>
+        <div class="compare-item"><div class="compare-label">DeepSeek</div><div class="compare-val">拒绝996，个人兴趣孵化</div></div>
+        <div class="compare-item"><div class="compare-label">AI建设</div><div class="compare-val">内部广泛使用自研AI工具</div></div>
+      </div>
+      <div class="compare-card"><h4>📊 核心发现</h4>
+        <div class="compare-item"><div class="compare-label">规模悖论</div><div class="compare-val">成果与规模非线性关系</div></div>
+        <div class="compare-item"><div class="compare-label">DeepSeek</div><div class="compare-val">150人挑战3000+人组织</div></div>
+        <div class="compare-item"><div class="compare-label">Moonshot</div><div class="compare-val">300人+1%算力交付万亿参数</div></div>
+        <div class="compare-item"><div class="compare-label">关键维度</div><div class="compare-val">"创新密度"是终极竞争力</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- INCENTIVES -->
+<section class="section fade-in" id="incentives">
+  <div class="section-header">
+    <div class="section-tag">Deep Dive</div>
+    <h2 class="section-title">全球 AI 组织激励机制全景解析</h2>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'tab-iw')">欧美组织</button>
+    <button class="tab-btn" onclick="switchTab(this,'tab-ic')">中国组织</button>
+  </div>
+  <div class="tab-content active" id="tab-iw">
+    <div class="overview-scroll">
+      <table class="incentive-table">
+        <thead><tr><th>组织</th><th>薪酬结构</th><th>股权激励</th><th>保留策略</th><th>独特激励</th></tr></thead>
+        <tbody>
+          <tr><td class="cell-name">Anthropic</td><td>高级研究员 >$100万/年<br>中级ML工程师 >$30万基本薪</td><td>竞争力股权包</td><td>80% 保留率，行业领先</td><td>使命导向文化+GPU算力配额作为顶尖科学家硬通货</td></tr>
+          <tr><td class="cell-name">OpenAI</td><td>新毕业生总薪 >$30万<br>顶级研究员 >$1,000万/年</td><td>PPU，平均$150万/年</td><td>保留奖金$30万-$150万</td><td>取消归属悬崖期，入职第一天季度归属；2025年股权补偿达$60亿</td></tr>
+          <tr><td class="cell-name">DeepMind</td><td>精英研究员达$2,000万/年</td><td>特别股权授予+缩短归属期</td><td>12个月竞业禁止+全薪花园假</td><td>Google全体系福利+追求诺贝尔级研究自由</td></tr>
+          <tr><td class="cell-name">xAI</td><td>工程师$18万-$44万/年</td><td>股权+绩效挂钩</td><td>缩短股权归属期</td><td>直接向CEO汇报的成长机会，使命驱动替代部分现金</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="tab-content" id="tab-ic">
+    <div class="overview-scroll">
+      <table class="incentive-table">
+        <thead><tr><th>组织</th><th>薪酬结构</th><th>股权/期权</th><th>绩效机制</th><th>独特激励</th></tr></thead>
+        <tbody>
+          <tr><td class="cell-name">DeepSeek</td><td>14薪制，AGI研究员最高¥154万/年</td><td>丰富股权包</td><td>技术导向评估</td><td>幻方基金背书的财务安全感+纯粹科研环境</td></tr>
+          <tr><td class="cell-name">Moonshot AI</td><td>月薪¥11k-60k，最高20薪</td><td>创业公司股权</td><td>弹性工作+双休</td><td>研究自由+前沿项目参与机会</td></tr>
+          <tr><td class="cell-name">MiniMax</td><td>行业竞争力薪酬</td><td>数十万至数百万美元期权</td><td>全员股权覆盖</td><td>上市公司股权的即时流动性</td></tr>
+          <tr><td class="cell-name">字节Seed</td><td>15薪（12+3绩效）</td><td>每月解锁，最高¥13万/月</td><td>8级(F~O)，E/O级年终奖达10个月</td><td>"黄金部门"独立激励，35%奖金池增长</td></tr>
+          <tr><td class="cell-name">阿里Qwen</td><td>阿里体系+AI溢价</td><td>股权+现金混合，季度归属</td><td>全面绩效体系</td><td>¥3800亿投资规模的长期信心</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- INSIGHTS -->
+<section class="section fade-in" id="insights">
+  <div class="section-header">
+    <div class="section-tag">Key Insights</div>
+    <h2 class="section-title">三大核心演化逻辑</h2>
+    <p class="section-desc">透过上述对比，可以提炼出当前全球最顶尖 AI Native 组织在运作机制上的三大核心演化逻辑——也是传统企业进行数字化转型的知识盲区。</p>
+  </div>
+  <div class="insight-grid">
+    <div class="insight-card">
+      <div class="insight-num">01</div>
+      <div class="insight-title">选拔机制：从"大厂履历崇拜"到"极端认知密度"</div>
+      <div class="insight-body">人才甄选全面转向"底层数学逻辑能力"、"系统性问题拆解直觉"与"工程物理极限突破能力"的极端考察。由于底层技术栈每隔半年发生颠覆性重构，过去的经验不仅不是财富，反而可能成为阻碍创新的"认知负债（Cognitive Debt）"。具备超强跨域学习能力、毫无思想包袱且敢于推翻常规框架的年轻大脑，成为组织最宝贵的核心资产。</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">02</div>
+      <div class="insight-title">激励机制：算力即权力 + 长效红利共享</div>
+      <div class="insight-body"><strong>算力即权力（Compute as Currency）</strong>：对于美系顶级大厂，"个人可随意调度的GPU算力配额"已超越薪水，成为吸引顶级科学家的最强磁石——免审的自由探索算力池是对科研信仰的最高规格奖励。<strong>纯粹愿景与学术庇护所</strong>：以DeepSeek为代表，通过扁平透明的学术化管理和充分的底层资金信任，用"参与创造历史、打破硅谷算力霸权"的使命感激发年轻天才科学家的极致潜能。</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">03</div>
+      <div class="insight-title">人机交互范式：Human-in-the-loop → Human-above-the-loop</div>
+      <div class="insight-body">在原生AI组织中，智能体已被授权承担执行层面的海量信息抓取、多语种代码编写、深层数据洞察甚至初级业务策略决策。人类员工的职责被历史性地重塑为"宏观流程架构师（Workflow Designer）"、"跨系统校验者"与"异常边界处理者"。组织内部"人均智能产出率（Intelligence output per capita）"呈指数级上升，极大缩短了从构想到落地的迭代周期。</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p style="margin-bottom:0.5rem;font-family:'Space Mono',monospace;font-size:0.75rem;color:var(--accent-blue);letter-spacing:2px;">BUILD BY SIRY</p>
+  <p>2026 全球 AI Native 组织全维度调研与未来组织建设全景报告</p>
+  <p style="margin-top:0.5rem;">交互式可视化呈现 · 基于原始研究报告制作</p>
+</footer>
+
+<script>
+function toggleCard(header) {
+  header.closest('.org-card').classList.toggle('open');
+}
+
+function switchTab(btn, tabId) {
+  const bar = btn.closest('.tab-bar');
+  const section = bar.parentElement;
+  bar.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  section.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+}
+
+// Scroll fade-in + bar animation
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      // Animate bars if inside
+      entry.target.querySelectorAll('.bar-fill[data-target]').forEach(bar => {
+        setTimeout(() => { bar.style.width = bar.dataset.target + '%'; }, 200);
+      });
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Nav
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('mainNav');
+  const cur = window.scrollY;
+  nav.classList.toggle('hidden', cur > lastScroll && cur > 100);
+  lastScroll = cur;
+  const secs = ['overview','overseas','china','compare','incentives','insights'];
+  for (let i = secs.length - 1; i >= 0; i--) {
+    const el = document.getElementById(secs[i]);
+    if (el && el.getBoundingClientRect().top < 200) {
+      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+      document.querySelector(`.nav-links a[href="#${secs[i]}"]`)?.classList.add('active');
+      break;
+    }
+  }
+});
+</script>
+</body>
+</html>
