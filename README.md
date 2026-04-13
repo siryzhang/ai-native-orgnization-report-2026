@@ -15,7 +15,7 @@
 ![Status](https://img.shields.io/badge/Status-Published-brightgreen)
 ![Year](https://img.shields.io/badge/Research-2026-blue)
 
-[🔗 在线预览](https://你的用户名.github.io/ai-native-report/) · [📄 查看报告](./index.html)
+[🔗 在线预览](https://siryzhang.github.io/ai-native-orgnization-report-2026/) · [📄 查看报告](./index.html)
 
 </div>
 
@@ -58,29 +58,6 @@
 - **响应式设计** — 桌面端与移动端自适应
 - **交互功能** — 可展开卡片、标签页切换、动态条形图、滚动渐入动画
 
-## 🚀 快速开始
-
-**方式一：直接打开**
-
-下载后双击 `index.html` 即可在浏览器中查看。
-
-**方式二：GitHub Pages 部署**
-
-1. Fork 本仓库
-2. 进入 Settings → Pages
-3. Source 选择 `main` 分支，目录选 `/ (root)`
-4. 保存后访问 `https://你的用户名.github.io/ai-native-report/`
-
-**方式三：本地服务**
-
-```bash
-# 使用 Python
-python -m http.server 8080
-
-# 使用 Node.js
-npx serve .
-```
-
 ## 📁 项目结构
 
 ```
@@ -96,12 +73,6 @@ ai-native-report/
 - 所有内容基于 2026 年初公开信息与调研数据
 - 薪酬数据因各组织统计口径不同（基本薪资 vs 全包），仅供参考
 - 部分数据为估算值，已在报告中标注
-
-## 📜 License
-
-本项目采用 [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) 许可协议。
-
-你可以自由分享和改编本作品，但须注明出处，且不得用于商业用途。
 
 ---
 
